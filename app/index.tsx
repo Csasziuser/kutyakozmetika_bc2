@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { View } from "react-native";
+import { useFocusEffect } from "expo-router";
+import { useCallback, useState } from "react";
+import { FlatList, Text, TextInput, View } from "react-native";
 
 interface Foglalas {
   id : number,
@@ -31,8 +32,32 @@ export default function Index() {
     }
   }
 
+  useFocusEffect(
+    useCallback(() => { getData(); },[nap])
+  );
+
   return (
     <View>
+      <View>
+        <TextInput
+          value={nap}
+          onChangeText={setNap}
+          placeholder="ÉÉÉÉ-HH-NN"
+          placeholderTextColor="lightgrey"
+        />
+      </View>
+      <FlatList
+        data={adatok}
+        refreshing={loading}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={ ({item}) => (
+          <View>
+            <Text>{item.time} - {item.customer_name}</Text>
+            <Text></Text>
+          </View>  
+        )
+        }
+      />
     </View>
   );
 }
